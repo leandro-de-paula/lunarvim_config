@@ -147,3 +147,16 @@ lvim.lsp.automatic_configuration.skipped_servers = { "pyright" }
 local lspconfig = require("lspconfig")
 lspconfig.pyright.setup({})
 
+
+-- Configuração para fundo transparente
+vim.opt.termguicolors = true -- Garante que o terminal suporte cores
+vim.cmd([[
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight NormalNC guibg=NONE ctermbg=NONE
+  highlight NonText guibg=NONE ctermbg=NONE
+  highlight LineNr guibg=NONE ctermbg=NONE
+  highlight Folded guibg=NONE ctermbg=NONE
+]])
+
+-- Configuração adicional se estiver usando uma interface gráfica (opcional)
+lvim.transparent_window = true
