@@ -108,6 +108,9 @@ vim.cmd([[
   autocmd FileType sql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }
 ]])
 
+-- Mapear o comando para abrir a interface do vim-dadbod
+vim.api.nvim_set_keymap("n", "<leader>db", ":DBUIToggle<CR>", { noremap = true, silent = true })
+
 -- Ativar fontes Nerd para a interface do banco
 vim.g.db_ui_use_nerd_fonts = 1
 
@@ -115,6 +118,14 @@ vim.g.db_ui_use_nerd_fonts = 1
 require("sidebar-nvim").setup({
   sections = { "symbols", "files" },
 })
+
+-- Adicionar SQL ao auto-complete
+lvim.builtin.cmp.sources = {
+    { name = "nvim_lsp" },
+    { name = "buffer" },
+    { name = "path" },
+    { name = "sql" }, -- Adiciona suporte ao SQL
+}
 
 -- Configuração do terminal integrado
 lvim.builtin.terminal.active = true
