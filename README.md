@@ -1,144 +1,56 @@
+# 🌙 Configuração do LunarVim (O Melhor dos Dois Mundos)
 
-# Configuração do LunarVim
+Este repositório contém uma configuração super otimizada do [LunarVim](https://www.lunarvim.org/), pensada para ser uma IDE de terminal rápida, bonita e cheia de recursos visuais e integrações úteis.
 
-Este repositório documenta uma configuração personalizada do LunarVim, incluindo suporte para PHP, HTML, CSS, JavaScript, TypeScript, Python e integração com bancos de dados. Abaixo, você encontra uma descrição detalhada das configurações e plugins utilizados.
+Esta configuração integra os padrões mais modernos do ecossistema Neovim (como a instalação automática de servidores via Mason) com plugins visuais potentes.
 
-## Requisitos
+---
 
-- [LunarVim](https://www.lunarvim.org/)
-- [Packer](https://github.com/wbthomason/packer.nvim)
-- Nerd Fonts para suporte à interface de banco de dados
+## ✨ Funcionalidades Inclusas
 
-## Configurações Principais
+- **Autocompletar e Inteligência (LSP):**
+  - **Python:** `pyright` + `black` (formatação) + `flake8` (linting)
+  - **PHP:** `intelephense` (com suporte para ler arquivos de projetos grandes)
+  - **JS/TS, Node:** `tsserver` + `prettier` (formatação)
+  - **Web (HTML, CSS, JSON, Angular):** Autocompletar e formatação configurados com `prettier`.
+- **Banco de Dados no Terminal:**
+  - `vim-dadbod` e suas interfaces, para rodar queries e acessar dados direto do editor, incluindo auto-complete de SQL. (Atalho `<leader>db`)
+- **Minimapa:**
+  - Um mapa do código na lateral direita estilo VSCode, usando `mini.map`. (Atalho `<leader>mm`)
+- **Visual e Produtividade:**
+  - **Sidebar:** Explorador de arquivos e símbolos.
+  - **Autotag:** Fechamento automático de tags (HTML, JSX, TSX, XML).
+  - **Colorizer:** Destaque de cores hexadecimais (ex: `#FF0000`) pintadas no próprio código.
+  - **Lualine:** Mostra o caminho completo da pasta no rodapé.
+  - **Fundo Transparente:** Integra-se com a opacidade do seu emulador de terminal.
+  - **Laravel Blade:** Suporte a destaque de sintaxe para templates PHP Blade.
 
-### Gerenciador de Plugins (Packer)
-O Packer é instalado automaticamente se não estiver presente:
-```lua
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-  PACKER_BOOTSTRAP = fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-  print("Installing Packer...")
-  vim.cmd("packadd packer.nvim")
-end
-```
+---
 
-### Configuração de LSPs
-#### PHP (Intelephense)
-Configuração para lidar com arquivos grandes:
-```lua
-lvim.lsp.automatic_configuration.skipped_servers = { "intelephense" }
-local lspconfig = require("lspconfig")
-lspconfig.intelephense.setup({
-  settings = {
-    intelephense = {
-      files = { maxSize = 7000000 },
-    },
-  },
-})
-```
+## 🛠️ Como Instalar e Usar no seu Computador
 
-#### HTML, CSS e JavaScript
-- **Formatadores:** Prettier
-- **Linters:** ESLint
-```lua
-local formatters = require("lvim.lsp.null-ls.formatters")
-formatters.setup({
-  { name = "prettier" },
-})
+A melhor forma de aplicar essa configuração (o "jeito hacker") é usar links simbólicos, assim você pode editar os arquivos aqui e o LunarVim já absorve as mudanças instantaneamente.
 
-local linters = require("lvim.lsp.null-ls.linters")
-linters.setup({
-  { name = "eslint_d" },
-})
-```
+1. **Instale as dependências básicas no sistema:**
+   (Git, Node, npm, Python, Cargo, Ripgrep, Neovim).
+2. **Instale uma Nerd Font** (ex: *FiraCode Nerd Font*) e aplique nas configurações do seu emulador de terminal.
+3. **Instale o LunarVim:**
+   ```bash
+   bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh)
+   ```
+4. **Clone este repositório** para a sua pasta de desenvolvimento:
+   ```bash
+   gh repo clone leandro-de-paula/lunarvim_config ~/Dev/lunarvim_config
+   ```
+5. **Crie o link simbólico (Symlink):**
+   ```bash
+   rm -rf ~/.config/lvim
+   ln -s ~/Dev/lunarvim_config ~/.config/lvim
+   ```
 
-#### Python
-- **Formatador:** Black
-- **Linter:** Flake8
-- LSP configurado com Pyright
-```lua
-local formatters = require("lvim.lsp.null-ls.formatters")
-formatters.setup({
-  { command = "black", filetypes = { "python" } },
-})
+Pronto! Agora basta digitar `lvim` no terminal. Na primeira execução, ele baixará todos os plugins, LSPs e formatadores automaticamente.
 
-local linters = require("lvim.lsp.null-ls.linters")
-linters.setup({
-  { command = "flake8", filetypes = { "python" } },
-})
+---
 
-lvim.lsp.automatic_configuration.skipped_servers = { "pyright" }
-lspconfig.pyright.setup({})
-```
-
-### Treesitter
-Ativa o destaque de sintaxe e instala suportes necessários:
-```lua
-lvim.builtin.treesitter.ensure_installed = { "html", "css", "javascript", "typescript" }
-lvim.builtin.treesitter.highlight.enabled = true
-```
-
-### Integração com SQL
-Adiciona suporte a bancos de dados:
-```lua
-vim.cmd([[ autocmd FileType sql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }]])
-vim.g.db_ui_use_nerd_fonts = 1
-```
-
-### Sidebar
-Adiciona um painel lateral com símbolos e arquivos:
-```lua
-require("sidebar-nvim").setup({
-  sections = { "symbols", "files" },
-})
-```
-
-### Terminal Integrado
-Ativa o terminal integrado no LunarVim:
-```lua
-lvim.builtin.terminal.active = true
-```
-
-### Minimapa
-Adiciona um minimapa à interface:
-```lua
-lvim.plugins = {
-  {
-    "echasnovski/mini.map",
-    version = false,
-    config = function()
-      require("mini.map").setup({
-        integrations = {
-          require("mini.map").gen_integration.builtin_search(),
-          require("mini.map").gen_integration.diagnostic(),
-        },
-        symbols = {
-          encode = require("mini.map").gen_encode_symbols.dot("4x2"),
-        },
-        window = {
-          side = "right",
-          width = 10,
-          winblend = 15,
-        },
-      })
-    end,
-  },
-}
-
-lvim.keys.normal_mode["<leader>mm"] = ":lua MiniMap.toggle()<CR>"
-```
-
-### Outros Plugins
-- **Blade Templates:** `jwalton512/vim-blade`
-- **Snippets:** `rafamadriz/friendly-snippets`, `L3MON4D3/LuaSnip`
-- **Colorizer para CSS:** `norcalli/nvim-colorizer.lua`
-- **JavaScript/TypeScript:** `pangloss/vim-javascript`, `maxmellon/vim-jsx-pretty`
-
-## Como Utilizar
-1. Instale o LunarVim seguindo as [instruções oficiais](https://www.lunarvim.org/docs/installation).
-2. Adicione a configuração acima ao arquivo `~/.config/lvim/config.lua`.
-3. Reinicie o LunarVim para aplicar as alterações.
-
-## Licença
-Este projeto está licenciado sob a [MIT License](LICENSE).
+## 📝 Personalização
+Se desejar alterar algo, edite diretamente o arquivo `config.lua` neste repositório. As mudanças serão aplicadas ao salvar, e você poderá fazer `git push` para guardar sua configuração na nuvem.
