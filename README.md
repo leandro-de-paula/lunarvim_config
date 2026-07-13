@@ -52,5 +52,20 @@ Pronto! Agora basta digitar `lvim` no terminal. Na primeira execução, ele baix
 
 ---
 
+## 🗄️ Guia de Banco de Dados (Para Estagiários/Iniciantes)
+
+A nossa configuração usa o plugin **Dadbod** para gerenciar bancos de dados diretamente do editor. Ele suporta MySQL, PostgreSQL, SQLite, entre outros.
+
+**Como conectar a um banco (Passo a passo):**
+1. No modo normal do LunarVim, pressione `<Espaço> + db` para abrir a interface.
+2. Navegue até a opção `Add Connection` e aperte `Enter`.
+3. Insira a string de conexão (URL) do seu banco:
+   - **PostgreSQL:** `postgresql://usuario:senha@localhost:5432/nome_do_banco`
+   - **MySQL:** `mysql://usuario:senha@localhost:3306/nome_do_banco`
+4. Digite um nome para a conexão (ex: `MeuDBLocal`).
+5. A partir de agora, você pode explorar as tabelas e, ao criar arquivos `.sql`, terá **autocompletar inteligente** que lê as tabelas e colunas direto do banco!
+
+---
+
 ## 📝 Personalização
 Se desejar alterar algo, edite diretamente o arquivo `config.lua` neste repositório. As mudanças serão aplicadas ao salvar, e você poderá fazer `git push` para guardar sua configuração na nuvem.
