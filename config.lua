@@ -46,6 +46,13 @@ linters.setup {
 
 -- 4. Plugins Extras
 lvim.plugins = {
+  -- Consertar o erro do none-ls no Neovim 0.10+
+  {
+    "nvimtools/none-ls.nvim",
+    branch = "main",
+    pin = false,
+  },
+  
   -- Suporte para Blade Templates (Laravel)
   { "jwalton512/vim-blade" },
   
