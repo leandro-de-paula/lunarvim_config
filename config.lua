@@ -8,6 +8,9 @@ lvim.builtin.treesitter.ensure_installed = {
 }
 lvim.builtin.treesitter.highlight.enabled = true
 
+-- Desativar indent-blankline v2 nativo do LunarVim (quebra no Neovim 0.12+)
+lvim.builtin.indentlines.active = false
+
 -- 2. Instalar os LSPs automaticamente (Inteligência da linguagem)
 lvim.lsp.installer.setup.ensure_installed = {
   "pyright",       -- Python
@@ -51,6 +54,20 @@ lvim.plugins = {
     "nvimtools/none-ls.nvim",
     branch = "main",
     pin = false,
+  },
+  
+  -- Consertar o erro do treesitter no Neovim 0.12+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    pin = false,
+    build = ":TSUpdate",
+  },
+  
+  -- Substituir o indent-blankline pelo v3 (compatível com Neovim 0.12+)
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {},
   },
   
   -- Suporte para Blade Templates (Laravel)
