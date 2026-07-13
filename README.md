@@ -32,7 +32,8 @@ Esta configuração integra os padrões mais modernos do ecossistema Neovim (com
 A melhor forma de aplicar essa configuração (o "jeito hacker") é usar links simbólicos, assim você pode editar os arquivos aqui e o LunarVim já absorve as mudanças instantaneamente.
 
 1. **Instale as dependências básicas no sistema:**
-   (Git, Node, npm, Python, Cargo, Ripgrep, Neovim).
+   - **Ubuntu/Debian:** `sudo apt install -y neovim git make python3-pip npm nodejs cargo ripgrep curl unzip`
+   - **Arch Linux:** `sudo pacman -S --needed neovim git make python-pip npm nodejs cargo ripgrep curl unzip`
 2. **Instale uma Nerd Font** (ex: *FiraCode Nerd Font*) e aplique nas configurações do seu emulador de terminal.
 3. **Instale o LunarVim:**
    ```bash
