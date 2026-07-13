@@ -60,7 +60,14 @@ lvim.plugins = {
   { "rafamadriz/friendly-snippets" },
   
   -- Sidebar (explorador à direita)
-  { "sidebar-nvim/sidebar.nvim" },
+  {
+    "sidebar-nvim/sidebar.nvim",
+    config = function()
+      require("sidebar-nvim").setup({
+        sections = { "symbols", "files" },
+      })
+    end,
+  },
   
   -- Minimap (mapa do código)
   {
@@ -86,7 +93,14 @@ lvim.plugins = {
   { "kristijanhusak/vim-dadbod-completion" },
   
   -- Fechamento automático de tags HTML/JSX
-  { "windwp/nvim-ts-autotag" },
+  {
+    "windwp/nvim-ts-autotag",
+    config = function()
+      require("nvim-ts-autotag").setup({
+        filetypes = { "html", "xml", "javascriptreact", "typescriptreact" },
+      })
+    end,
+  },
   
   -- Colorizer (para cores HEX/RGB)
   { "norcalli/nvim-colorizer.lua" },
@@ -94,15 +108,7 @@ lvim.plugins = {
 
 -- 5. Configurações dos Plugins Visuais
 
--- Autotag
-require("nvim-ts-autotag").setup({
-  filetypes = { "html", "xml", "javascriptreact", "typescriptreact" },
-})
 
--- Sidebar
-require("sidebar-nvim").setup({
-  sections = { "symbols", "files" },
-})
 
 -- Caminho do arquivo na Lualine (rodapé)
 lvim.builtin.lualine.sections.lualine_c = {
