@@ -67,5 +67,13 @@ A nossa configuração usa o plugin **Dadbod** para gerenciar bancos de dados di
 
 ---
 
+## ⚠️ Troubleshooting (Problemas Comuns)
+
+**Erro vermelho do `none-ls` no Neovim 0.10+**
+O LunarVim por padrão trava as versões dos plugins (pin). Ao utilizar o Neovim 0.10+, o plugin interno `none-ls` original lançava um erro `attempt to index field '_request_name_to_capability' (a nil value)`.
+**A Solução já está inclusa:** Nossa configuração resolve isso automaticamente destravando o `none-ls` no `config.lua` (`pin = false`), forçando o gerenciador de pacotes a usar a versão compatível mais recente.
+
+---
+
 ## 📝 Personalização
 Se desejar alterar algo, edite diretamente o arquivo `config.lua` neste repositório. As mudanças serão aplicadas ao salvar, e você poderá fazer `git push` para guardar sua configuração na nuvem.
