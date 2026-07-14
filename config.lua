@@ -79,6 +79,17 @@ lvim.plugins = {
   -- Suporte para Blade Templates (Laravel)
   { "jwalton512/vim-blade" },
   
+  -- Preview de Markdown (estilo VSCode)
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  },
+  
   -- Snippets Extras
   { "rafamadriz/friendly-snippets" },
   
@@ -158,6 +169,7 @@ lvim.builtin.cmp.sources = {
 -- Atalhos
 lvim.keys.normal_mode["<leader>db"] = ":DBUIToggle<CR>"
 lvim.keys.normal_mode["<leader>mm"] = ":lua MiniMap.toggle()<CR>"
+lvim.keys.normal_mode["<leader>mp"] = ":MarkdownPreviewToggle<CR>"
 
 -- 7. Interface e Transparência
 lvim.builtin.terminal.active = true
