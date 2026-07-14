@@ -63,6 +63,12 @@ lvim.plugins = {
     build = ":TSUpdate",
   },
   
+  -- Consertar o erro do nvim-tree no Neovim 0.12+ (vim.diagnostic.is_disabled)
+  {
+    "nvim-tree/nvim-tree.lua",
+    pin = false,
+  },
+  
   -- Substituir o indent-blankline pelo v3 (compatível com Neovim 0.12+)
   {
     "lukas-reineke/indent-blankline.nvim",
