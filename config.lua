@@ -42,9 +42,9 @@ formatters.setup {
   },
 }
 
-local linters = require("lvim.lsp.null-ls.linters")
+local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { command = "flake8", filetypes = { "python" } },
+  -- flake8 foi removido dos builtins do none-ls. O Pyright já lida bem com os diagnósticos.
 }
 
 -- 4. Plugins Extras
@@ -52,8 +52,8 @@ lvim.plugins = {
   -- Consertar o erro do none-ls no Neovim 0.10+
   {
     "nvimtools/none-ls.nvim",
-    branch = "main",
-    pin = false,
+    commit = "01f8e62ea11603e59ad9ff7afcfa94fd183f76d6",
+    pin = true,
   },
   
   -- Consertar o erro do treesitter no Neovim 0.12+
