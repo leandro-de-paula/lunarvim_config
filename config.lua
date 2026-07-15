@@ -59,7 +59,8 @@ lvim.plugins = {
   -- Consertar o erro do treesitter no Neovim 0.12+
   {
     "nvim-treesitter/nvim-treesitter",
-    pin = false,
+    commit = "cf12346a3414fa1b06af75c79faebe7f76df080a",
+    pin = true,
     build = ":TSUpdate",
   },
   
@@ -79,14 +80,15 @@ lvim.plugins = {
   -- Suporte para Blade Templates (Laravel)
   { "jwalton512/vim-blade" },
 
-  -- Renderização de Markdown no próprio terminal
+  -- Preview de Markdown (estilo VSCode no navegador)
   {
-    "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
-    ft = { "markdown", "norg", "rmd", "org" },
-    config = function()
-      require("render-markdown").setup({})
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
     end,
+    ft = { "markdown" },
   },
   
   -- Snippets Extras
@@ -168,7 +170,7 @@ lvim.builtin.cmp.sources = {
 -- Atalhos
 lvim.keys.normal_mode["<leader>db"] = ":DBUIToggle<CR>"
 lvim.keys.normal_mode["<leader>mm"] = ":lua MiniMap.toggle()<CR>"
-lvim.keys.normal_mode["<leader>mp"] = ":RenderMarkdown toggle<CR>"
+lvim.keys.normal_mode["<leader>mp"] = ":MarkdownPreviewToggle<CR>"
 
 -- 7. Interface e Transparência
 lvim.builtin.terminal.active = true
