@@ -80,15 +80,14 @@ lvim.plugins = {
   -- Suporte para Blade Templates (Laravel)
   { "jwalton512/vim-blade" },
 
-  -- Preview de Markdown no próprio terminal (usando Glow)
+  -- Renderização de Markdown no próprio terminal (WYSIWYG)
   {
-    "ellisonleao/glow.nvim",
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    ft = { "markdown", "norg", "rmd", "org" },
     config = function()
-      require("glow").setup({
-        glow_path = "/home/leandro/.local/bin/glow",
-      })
+      require("render-markdown").setup({})
     end,
-    cmd = "Glow"
   },
   
   -- Snippets Extras
@@ -170,7 +169,7 @@ lvim.builtin.cmp.sources = {
 -- Atalhos
 lvim.keys.normal_mode["<leader>db"] = ":DBUIToggle<CR>"
 lvim.keys.normal_mode["<leader>mm"] = ":lua MiniMap.toggle()<CR>"
-lvim.keys.normal_mode["<leader>mp"] = ":Glow<CR>"
+lvim.keys.normal_mode["<leader>mp"] = ":RenderMarkdown toggle<CR>"
 
 -- 7. Interface e Transparência
 lvim.builtin.terminal.active = true
