@@ -83,7 +83,11 @@ lvim.plugins = {
   -- Preview de Markdown no próprio terminal (usando Glow)
   {
     "ellisonleao/glow.nvim",
-    config = true,
+    config = function()
+      require("glow").setup({
+        glow_path = "/home/leandro/.local/bin/glow",
+      })
+    end,
     cmd = "Glow"
   },
   
