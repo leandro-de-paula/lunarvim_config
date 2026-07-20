@@ -154,20 +154,67 @@ lvim.builtin.lualine.sections.lualine_c = {
 }
 
 -- 6. Configurações do Banco de Dados (Dadbod)
+-- ATENÇÃO: o vim-dadbod chama o CLIENTE de linha de comando do banco.
+--   MySQL/MariaDB -> `mysql`   PostgreSQL -> `psql`   SQL Server -> `sqlcmd`
+-- Instale o cliente do MySQL antes de usar:
+--   Ubuntu/Debian: sudo apt install -y mysql-client-core-8.0
+--   Arch Linux:    sudo pacman -S --needed mariadb-clients   (fornece /usr/bin/mysql)
 vim.cmd([[
-  autocmd FileType sql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }
+  autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer { sources = { { name = 'vim-dadbod-completion' } } }
 ]])
 vim.g.db_ui_use_nerd_fonts = 1
+vim.g.db_ui_show_database_icon = 1
+vim.g.db_ui_execute_on_save = 0 -- não roda ao salvar; execução é explícita pelos atalhos
 -- Adicionar SQL ao auto-complete do LunarVim
 lvim.builtin.cmp.sources = {
     { name = "nvim_lsp" },
+    { name = "vim-dadbod-completion" },
     { name = "buffer" },
     { name = "path" },
-    { name = "sql" },
 }
 
+-- 6.1 Conexões de banco (genérico, multi-projeto)
+-- As URLs NUNCA ficam no repositório: vêm de variáveis de ambiente com o
+-- prefixo DBUI_, carregadas pelo shell (ex.: ~/.config/dadbod/connections.env
+-- via ~/.zshrc). Cada variável DBUI_<Nome>=<url> vira uma conexão no lvim;
+-- o rótulo exibido é <Nome> com "_" trocado por espaço.
+-- Para adicionar uma conexão, basta criar outra variável DBUI_ — sem editar aqui.
+local dbs = {}
+for name, value in pairs(vim.fn.environ()) do
+  local label = name:match("^DBUI_(.+)$")
+  if label and value ~= nil and value ~= "" then
+    dbs[label:gsub("_", " ")] = value
+  end
+end
+vim.g.dbs = dbs
+
+-- Conectar o buffer SQL atual a uma das conexões (menu de escolha).
+-- Depois de conectar: <leader>ra roda o buffer inteiro; em modo visual,
+-- selecione linhas e use <leader>rr para rodar só a seleção.
+local function db_pick()
+  local labels = {}
+  for label, _ in pairs(vim.g.dbs or {}) do
+    table.insert(labels, label)
+  end
+  table.sort(labels)
+  if #labels == 0 then
+    vim.notify("Nenhuma conexão encontrada.\nDefina variáveis DBUI_* (ex.: ~/.config/dadbod/connections.env) e reabra o lvim.", vim.log.levels.WARN)
+    return
+  end
+  vim.ui.select(labels, { prompt = "Conectar buffer ao banco:" }, function(choice)
+    if choice then
+      vim.b.db = vim.g.dbs[choice]
+      vim.notify("Buffer conectado a: " .. choice)
+    end
+  end)
+end
+vim.api.nvim_create_user_command("DbPick", db_pick, {})
+
 -- Atalhos
-lvim.keys.normal_mode["<leader>db"] = ":DBUIToggle<CR>"
+lvim.keys.normal_mode["<leader>db"] = ":DBUIToggle<CR>"  -- abre/fecha a árvore do dadbod-ui
+lvim.keys.normal_mode["<leader>dc"] = ":DbPick<CR>"      -- escolher a conexão do buffer atual
+lvim.keys.normal_mode["<leader>ra"] = ":%DB<CR>"         -- rodar o BUFFER inteiro na conexão do buffer (b:db)
+lvim.keys.visual_mode["<leader>rr"] = ":DB<CR>"          -- rodar a SELEÇÃO (visual) na conexão do buffer
 lvim.keys.normal_mode["<leader>mm"] = ":lua MiniMap.toggle()<CR>"
 lvim.keys.normal_mode["<leader>mp"] = ":RenderMarkdown toggle<CR>"
 

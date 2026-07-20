@@ -1,0 +1,8 @@
+# Nunca versione segredos/credenciais de banco.
+# As URLs de conexão do dadbod vêm de variáveis de ambiente
+# (ex.: ~/.config/.frc1607/db.env, fora deste repositório).
+*.env
+db.env
+credentials
+*.secret
+.DS_Store

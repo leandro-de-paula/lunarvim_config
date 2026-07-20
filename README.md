@@ -55,16 +55,54 @@ Pronto! Agora basta digitar `lvim` no terminal. Na primeira execução, ele baix
 
 ## 🗄️ Guia de Banco de Dados (Para Estagiários/Iniciantes)
 
-A nossa configuração usa o plugin **Dadbod** para gerenciar bancos de dados diretamente do editor. Ele suporta MySQL, PostgreSQL, SQLite, entre outros.
+A nossa configuração usa o plugin **Dadbod** para gerenciar bancos de dados diretamente do editor. Ele suporta MySQL/MariaDB, PostgreSQL, SQL Server, SQLite, entre outros.
 
-**Como conectar a um banco (Passo a passo):**
-1. No modo normal do LunarVim, pressione `<Espaço> + db` para abrir a interface.
-2. Navegue até a opção `Add Connection` e aperte `Enter`.
-3. Insira a string de conexão (URL) do seu banco:
-   - **PostgreSQL:** `postgresql://usuario:senha@localhost:5432/nome_do_banco`
-   - **MySQL:** `mysql://usuario:senha@localhost:3306/nome_do_banco`
-4. Digite um nome para a conexão (ex: `MeuDBLocal`).
-5. A partir de agora, você pode explorar as tabelas e, ao criar arquivos `.sql`, terá **autocompletar inteligente** que lê as tabelas e colunas direto do banco!
+> 📚 **Tutorial completo e detalhado:** `~/Dev/my-kindle/mds/tutorial-lunarvim.md` (instalação, uso e banco de dados passo a passo, para os dois sistemas operacionais).
+
+> ⚠️ **Pré-requisito obrigatório:** o dadbod **não fala com o banco sozinho** — ele chama o cliente de linha de comando (`mysql` para MySQL/MariaDB, `psql` para PostgreSQL, `sqlcmd` para SQL Server). Sem o cliente, nada roda. Para MySQL/MariaDB:
+> ```bash
+> sudo apt install -y mysql-client-core-8.0     # Ubuntu/Debian
+> sudo pacman -S --needed mariadb-clients        # Arch Linux (fornece /usr/bin/mysql)
+> ```
+> Confirme com `mysql --version`.
+
+### 🔐 Como as conexões são definidas (sem senha no repositório)
+
+As conexões **não** carregam senha no `config.lua`. Elas vêm de **variáveis de ambiente** com o prefixo `DBUI_`, guardadas fora do repositório em `~/.config/dadbod/connections.env` (permissão `600`) e carregadas automaticamente pelo `~/.zshrc`.
+
+Convenção: cada `export DBUI_<Nome>="<url>"` vira uma conexão no lvim; o **rótulo** exibido é `<Nome>` com `_` trocado por espaço. Exemplo do arquivo:
+
+```bash
+# ~/.config/dadbod/connections.env   (chmod 600, fora do git)
+export DBUI_FRC1607_movida_gtf_Vetor="mysql://usuario:senha@10.87.12.11:3306/movida_gtf"
+export DBUI_Hinode_MSSQL="sqlserver://usuario:senha@10.0.1.200/hinode"
+```
+
+> Adicionar uma conexão nova = adicionar uma linha `DBUI_...`, dar `source ~/.config/dadbod/connections.env` (ou abrir um terminal novo) e reabrir o lvim. **Não** precisa editar o `config.lua`.
+>
+> ⚠️ Se a senha tiver caractere especial (`@ : / ? & % < > *`, espaço…), faça **URL-encode** dela na URL (`@` → `%40`, `%` → `%25`, etc.).
+
+Formatos de URL: `mysql://…`, `postgresql://…`, `sqlserver://…`, `sqlite:/caminho/arquivo.db`.
+
+### ▶️ Abrir e rodar um script `.sql` e ver o resultado
+
+1. Abra o `.sql` no lvim (ex.: `lvim caminho/do/script.sql`).
+2. **Conecte o buffer a um banco:** `<Espaço> d c` → abre um menu com as conexões (`vim.g.dbs`); escolha uma. Aparece uma notificação "Buffer conectado a: …".
+3. **Rode e veja o resultado num split de preview:**
+   - **Só um trecho:** entre em modo visual (`V`), selecione as linhas e tecle `<Espaço> r r`.
+   - **O arquivo inteiro:** `<Espaço> r a`.
+4. O resultado costuma vir **dobrado** (linha `+-- N lines:`). Pule para a janela de baixo com `Ctrl-w j` e tecle `zR` para abrir a dobra. Feche o resultado com `:q`.
+
+**Atalhos de banco desta config:**
+
+| Atalho | Ação |
+| :--- | :--- |
+| `<leader>db` | Abrir/fechar a árvore do dadbod-ui |
+| `<leader>dc` | Escolher a conexão do buffer atual (menu) |
+| `<leader>rr` | (visual) Rodar a **seleção** na conexão do buffer |
+| `<leader>ra` | Rodar o **arquivo inteiro** na conexão do buffer |
+
+> `<leader>` é a tecla líder (por padrão, `Espaço`). O aviso `Using a password on the command line interface can be insecure` que aparece no resultado é inofensivo (o cliente `mysql` recebe a senha por argumento).
 
 ---
 
