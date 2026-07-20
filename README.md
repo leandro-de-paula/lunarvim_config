@@ -110,7 +110,7 @@ Formatos de URL: `mysql://…`, `postgresql://…`, `sqlserver://…`, `sqlite:/
 
 **Erro vermelho do `none-ls` no Neovim 0.10+**
 O LunarVim por padrão trava as versões dos plugins (pin). Ao utilizar o Neovim 0.10+, o plugin interno `none-ls` original lançava um erro `attempt to index field '_request_name_to_capability' (a nil value)`.
-**A Solução já está inclusa:** Nossa configuração resolve isso automaticamente destravando o `none-ls` no `config.lua` (`pin = false`), forçando o gerenciador de pacotes a usar a versão compatível mais recente.
+**A Solução já está inclusa:** o `config.lua` **fixa o `none-ls` num commit específico conhecido como compatível** (bloco `nvimtools/none-ls.nvim` com `pin = true`), evitando que uma versão nova reintroduza o erro.
 
 ---
 
