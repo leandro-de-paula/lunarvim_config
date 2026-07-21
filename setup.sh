@@ -10,8 +10,9 @@
 #   5. instala o LunarVim (se ainda não existir)
 #   6. aponta ~/.config/lvim para este repositório (com backup)
 #   7. instala os formatadores black (Python) e prettier (JS/web)
-#   8. cria o esqueleto de ~/.config/dadbod/connections.env + auto-load
-#   9. valida no final
+#   8. instala a FiraCode Nerd Font (pule com SKIP_FONT=1)
+#   9. cria o esqueleto de ~/.config/dadbod/connections.env + auto-load
+#  10. valida no final
 #
 # Uso:
 #   git clone https://github.com/leandro-de-paula/lunarvim_config.git ~/Dev/lunarvim_config
@@ -178,6 +179,35 @@ install_formatters() {
   fi
 }
 
+# ---- 8b. Nerd Font (FiraCode) — instala os arquivos da fonte --------
+# Aplicar a fonte no terminal continua sendo manual (config do emulador).
+# Pule com: SKIP_FONT=1 ./setup.sh
+install_nerd_font() {
+  step "Instalando a FiraCode Nerd Font"
+  if [ "${SKIP_FONT:-0}" = "1" ]; then warn "SKIP_FONT=1 — pulando a fonte"; return; fi
+  if have fc-list && fc-list 2>/dev/null | grep -qi "FiraCode Nerd Font"; then
+    ok "FiraCode Nerd Font já instalada"; return
+  fi
+  local url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip"
+  local dest="$HOME/.local/share/fonts/FiraCodeNerdFont"
+  local tmp; tmp="$(mktemp -d)"
+  mkdir -p "$dest"
+  if curl -fsSL "$url" -o "$tmp/FiraCode.zip"; then
+    if unzip -o -q "$tmp/FiraCode.zip" -d "$dest" >/dev/null 2>&1; then
+      # mantém só os arquivos de fonte na pasta (remove READMEs/licenças)
+      find "$dest" -maxdepth 1 -type f ! -iname '*.ttf' ! -iname '*.otf' -delete 2>/dev/null || true
+      have fc-cache && fc-cache -f "$HOME/.local/share/fonts" >/dev/null 2>&1
+      ok "FiraCode Nerd Font instalada em $dest"
+      warn "Falta APLICAR a fonte 'FiraCode Nerd Font' nas preferências do SEU terminal (passo manual)."
+    else
+      warn "falha ao descompactar a fonte"
+    fi
+  else
+    warn "não consegui baixar a fonte (rede?) — instale manualmente depois"
+  fi
+  rm -rf "$tmp"
+}
+
 # ---- 9. conexões do dadbod (esqueleto, sem senha) -------------------
 setup_db_connections() {
   step "Preparando o arquivo de conexões do dadbod"
@@ -229,7 +259,7 @@ validate() {
   ok "Concluído."
   echo "Próximos passos:"
   echo "  1) Abra um terminal NOVO (ou rode: source \"$RC\")."
-  echo "  2) Instale uma Nerd Font e aplique no seu terminal (ícones)."
+  echo "  2) APLIQUE a 'FiraCode Nerd Font' nas preferências do seu terminal (a fonte já foi instalada)."
   echo "  3) Edite ~/.config/dadbod/connections.env e adicione suas conexões (linhas DBUI_...)."
   echo "  4) Rode: lvim   (na 1ª vez ele baixa plugins e LSPs — aguarde)."
 }
@@ -244,6 +274,7 @@ main() {
   install_lunarvim
   link_config
   install_formatters
+  install_nerd_font
   setup_db_connections
   validate
 }
