@@ -31,7 +31,7 @@ Esta configuração integra os padrões mais modernos do ecossistema Neovim (com
 
 ### ⚡ Jeito rápido (recomendado): script de setup
 
-Instala e configura **tudo** (dependências, cliente MySQL, LunarVim, symlink desta config, formatadores `black`/`prettier` e o esqueleto das conexões do dadbod). Funciona em **Ubuntu/Debian** e **Arch**, é **idempotente** (pode repetir) e faz **backup** de qualquer config antiga do lvim.
+Instala e configura **tudo** (dependências, cliente MySQL, LunarVim, symlink desta config, formatadores `black`/`prettier`, a **FiraCode Nerd Font** e o esqueleto das conexões do dadbod). Funciona em **Ubuntu/Debian** e **Arch**, é **idempotente** (pode repetir) e faz **backup** de qualquer config antiga do lvim.
 
 ```bash
 git clone https://github.com/leandro-de-paula/lunarvim_config.git ~/Dev/lunarvim_config
@@ -39,7 +39,9 @@ cd ~/Dev/lunarvim_config
 ./setup.sh
 ```
 
-Ele pede `sudo` só para os pacotes de sistema. No fim, mostra uma validação. Depois: abra um terminal novo, instale uma **Nerd Font** no terminal, preencha `~/.config/dadbod/connections.env` com suas conexões e rode `lvim`.
+Ele pede `sudo` só para os pacotes de sistema. No fim, mostra uma validação. Depois: abra um terminal novo, **aplique a FiraCode Nerd Font** (o script já a instalou) nas preferências do seu terminal, preencha `~/.config/dadbod/connections.env` com suas conexões e rode `lvim`.
+
+> A fonte é **instalada** pelo script, mas **aplicá-la** no emulador de terminal é um passo manual (config gráfica). Pule a instalação da fonte com `SKIP_FONT=1 ./setup.sh`.
 
 ### 🔧 Jeito manual (passo a passo)
 
