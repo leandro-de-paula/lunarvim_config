@@ -185,11 +185,13 @@ install_formatters() {
 install_nerd_font() {
   step "Instalando a FiraCode Nerd Font"
   if [ "${SKIP_FONT:-0}" = "1" ]; then warn "SKIP_FONT=1 — pulando a fonte"; return; fi
-  if have fc-list && fc-list 2>/dev/null | grep -qi "FiraCode Nerd Font"; then
-    ok "FiraCode Nerd Font já instalada"; return
-  fi
   local url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip"
   local dest="$HOME/.local/share/fonts/FiraCodeNerdFont"
+  # já instalada? checa o disco (robusto) e o cache do fontconfig
+  if ls "$dest"/*.ttf >/dev/null 2>&1 \
+     || { have fc-list && fc-list 2>/dev/null | grep -qi "FiraCode Nerd Font"; }; then
+    ok "FiraCode Nerd Font já instalada"; return
+  fi
   local tmp; tmp="$(mktemp -d)"
   mkdir -p "$dest"
   if curl -fsSL "$url" -o "$tmp/FiraCode.zip"; then
