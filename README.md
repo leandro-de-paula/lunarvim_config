@@ -9,7 +9,7 @@ Esta configuração integra os padrões mais modernos do ecossistema Neovim (com
 ## ✨ Funcionalidades Inclusas
 
 - **Autocompletar e Inteligência (LSP):**
-  - **Python:** `pyright` + `black` (formatação) + `flake8` (linting)
+  - **Python:** `pyright` + `black` (formatação)
   - **PHP:** `intelephense` (com suporte para ler arquivos de projetos grandes)
   - **JS/TS, Node:** `tsserver` + `prettier` (formatação)
   - **Web (HTML, CSS, JSON, Angular):** Autocompletar e formatação configurados com `prettier`.
@@ -17,6 +17,8 @@ Esta configuração integra os padrões mais modernos do ecossistema Neovim (com
   - `vim-dadbod` e suas interfaces, para rodar queries e acessar dados direto do editor, incluindo auto-complete de SQL. (Atalho `<leader>db`)
 - **Minimapa:**
   - Um mapa do código na lateral direita estilo VSCode, usando `mini.map`. (Atalho `<leader>mm`)
+- **Source Control / Git:**
+  - `gitsigns` para ver alterações no arquivo e **LazyGit** para uma tela completa de Git dentro do editor. (Menu `<leader>g`, LazyGit em `<leader>g g`)
 - **Visual e Produtividade:**
   - **Sidebar:** Explorador de arquivos e símbolos.
   - **Autotag:** Fechamento automático de tags (HTML, JSX, TSX, XML).
@@ -31,25 +33,67 @@ Esta configuração integra os padrões mais modernos do ecossistema Neovim (com
 
 ### ⚡ Jeito rápido (recomendado): script de setup
 
-Instala e configura **tudo** (dependências, cliente MySQL, LunarVim, symlink desta config, formatadores `black`/`prettier`, a **FiraCode Nerd Font** e o esqueleto das conexões do dadbod). Funciona em **Ubuntu/Debian** e **Arch**, é **idempotente** (pode repetir) e faz **backup** de qualquer config antiga do lvim.
+Instala, sincroniza e configura **tudo** (dependências, cliente MySQL, LunarVim, symlink desta config, formatadores `black`/`prettier`, **LazyGit**, a **FiraCode Nerd Font**, plugins do LunarVim e o esqueleto das conexões do dadbod). Funciona em **Ubuntu/Debian** e **Arch**, é **idempotente** (pode repetir) e faz **backup** de qualquer config antiga do lvim.
 
 ```bash
-git clone https://github.com/leandro-de-paula/lunarvim_config.git ~/Dev/lunarvim_config
-cd ~/Dev/lunarvim_config
+mkdir -p ~/Dev
+if [ -d ~/Dev/lunarvim_config/.git ]; then
+  cd ~/Dev/lunarvim_config
+  git pull --ff-only
+else
+  git clone https://github.com/leandro-de-paula/lunarvim_config.git ~/Dev/lunarvim_config
+  cd ~/Dev/lunarvim_config
+fi
 ./setup.sh
 ```
 
-Ele pede `sudo` só para os pacotes de sistema. No fim, mostra uma validação. Depois: abra um terminal novo, **aplique a FiraCode Nerd Font** (o script já a instalou) nas preferências do seu terminal, preencha `~/.config/dadbod/connections.env` com suas conexões e rode `lvim`.
+Ele pede `sudo` só para os pacotes de sistema. Se o repositório já estiver limpo e ligado ao `origin`, o próprio script também tenta sincronizar a config com `origin/<branch>` usando fast-forward. Se houver alterações locais, ele **não sobrescreve nada** e avisa.
+
+No fim, mostra uma validação. Depois: abra um terminal novo, **aplique a FiraCode Nerd Font** (o script já a instalou) nas preferências do seu terminal, preencha `~/.config/dadbod/connections.env` com suas conexões e rode `lvim`.
 
 > A fonte é **instalada** pelo script, mas **aplicá-la** no emulador de terminal é um passo manual (config gráfica). Pule a instalação da fonte com `SKIP_FONT=1 ./setup.sh`.
+
+### Uso normal, manutenção e limites do setup
+
+Use o `setup.sh` como rotina segura de manutenção. Ele pode ser executado novamente quando você trocar de máquina, reinstalar o Arch/Ubuntu, perceber que falta algum pacote ou quiser garantir que a configuração local está alinhada com o repositório.
+
+**Uso normal:**
+
+```bash
+cd ~/Dev/lunarvim_config
+git pull --ff-only
+./setup.sh
+```
+
+Esse fluxo é o recomendado para o dia a dia. Ele atualiza esta config, instala o que estiver faltando, refaz o symlink se necessário, sincroniza os plugins com o `lazy-lock.json` e valida o ambiente.
+
+**Manutenção controlada:**
+
+```bash
+cd ~/Dev/lunarvim_config
+git pull --ff-only
+UPDATE_LAZYGIT=1 ./setup.sh
+```
+
+Use esse formato quando quiser forçar a atualização do LazyGit, principalmente em Ubuntu/Debian quando ele foi instalado em `~/.local/bin` pelo release oficial.
+
+**Pulos úteis:**
+
+```bash
+SKIP_FONT=1 ./setup.sh       # não baixa/reinstala a fonte
+SKIP_REPO_SYNC=1 ./setup.sh  # não tenta sincronizar este repositório
+SKIP_LVIM_SYNC=1 ./setup.sh  # não roda :Lazy sync automaticamente
+```
+
+O script **não** sobrescreve alterações locais, não resolve branch divergente e não faz update agressivo do core do LunarVim sozinho. Para atualizar o LunarVim em si, abra o editor e rode `:LvimUpdate` conscientemente; depois reinicie o `lvim` e valide se plugins e atalhos continuam funcionando.
 
 ### 🔧 Jeito manual (passo a passo)
 
 A ideia é usar link simbólico, assim você edita os arquivos aqui e o LunarVim já absorve as mudanças.
 
 1. **Instale as dependências básicas no sistema:**
-   - **Ubuntu/Debian:** `sudo apt install -y neovim git make python3-pip npm nodejs cargo ripgrep curl unzip fontconfig`
-   - **Arch Linux:** `sudo pacman -S --needed neovim git make python-pip npm nodejs cargo ripgrep curl unzip fontconfig`
+   - **Ubuntu/Debian:** `sudo apt install -y neovim git make python3-pip npm nodejs cargo ripgrep curl unzip tar fontconfig`
+   - **Arch Linux:** `sudo pacman -S --needed neovim git make python-pip npm nodejs cargo ripgrep curl unzip tar fontconfig`
 2. **Instale uma Nerd Font** (ex: *FiraCode Nerd Font*) e aplique nas configurações do seu emulador de terminal.
 3. **Instale o LunarVim:**
    ```bash
@@ -65,6 +109,7 @@ A ideia é usar link simbólico, assim você edita os arquivos aqui e o LunarVim
    ln -s ~/Dev/lunarvim_config ~/.config/lvim
    ```
 6. **Instale os formatadores** (não vêm automáticos): dentro do lvim, `:MasonInstall black prettier` — ou pelo sistema: `npm install -g prettier` e `pipx install black`.
+7. **Instale o LazyGit** para usar `<Espaço> g g` como Source Control completo. No Arch: `sudo pacman -S --needed lazygit`. No Ubuntu/Debian, prefira o `setup.sh`, porque ele baixa o release oficial em `~/.local/bin` quando não há pacote no apt.
 
 Pronto! Agora basta digitar `lvim` no terminal. Na primeira execução, ele baixa os plugins e os LSPs automaticamente.
 
