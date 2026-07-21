@@ -29,7 +29,21 @@ Esta configuração integra os padrões mais modernos do ecossistema Neovim (com
 
 ## 🛠️ Como Instalar e Usar no seu Computador
 
-A melhor forma de aplicar essa configuração (o "jeito hacker") é usar links simbólicos, assim você pode editar os arquivos aqui e o LunarVim já absorve as mudanças instantaneamente.
+### ⚡ Jeito rápido (recomendado): script de setup
+
+Instala e configura **tudo** (dependências, cliente MySQL, LunarVim, symlink desta config, formatadores `black`/`prettier` e o esqueleto das conexões do dadbod). Funciona em **Ubuntu/Debian** e **Arch**, é **idempotente** (pode repetir) e faz **backup** de qualquer config antiga do lvim.
+
+```bash
+git clone https://github.com/leandro-de-paula/lunarvim_config.git ~/Dev/lunarvim_config
+cd ~/Dev/lunarvim_config
+./setup.sh
+```
+
+Ele pede `sudo` só para os pacotes de sistema. No fim, mostra uma validação. Depois: abra um terminal novo, instale uma **Nerd Font** no terminal, preencha `~/.config/dadbod/connections.env` com suas conexões e rode `lvim`.
+
+### 🔧 Jeito manual (passo a passo)
+
+A ideia é usar link simbólico, assim você edita os arquivos aqui e o LunarVim já absorve as mudanças.
 
 1. **Instale as dependências básicas no sistema:**
    - **Ubuntu/Debian:** `sudo apt install -y neovim git make python3-pip npm nodejs cargo ripgrep curl unzip`
@@ -41,15 +55,16 @@ A melhor forma de aplicar essa configuração (o "jeito hacker") é usar links s
    ```
 4. **Clone este repositório** para a sua pasta de desenvolvimento:
    ```bash
-   gh repo clone leandro-de-paula/lunarvim_config ~/Dev/lunarvim_config
+   git clone https://github.com/leandro-de-paula/lunarvim_config.git ~/Dev/lunarvim_config
    ```
-5. **Crie o link simbólico (Symlink):**
+5. **Crie o link simbólico (Symlink)** — com backup, sem `rm -rf`:
    ```bash
-   rm -rf ~/.config/lvim
+   [ -e ~/.config/lvim ] && mv ~/.config/lvim ~/.config/lvim.bak.$(date +%Y%m%d%H%M%S)
    ln -s ~/Dev/lunarvim_config ~/.config/lvim
    ```
+6. **Instale os formatadores** (não vêm automáticos): dentro do lvim, `:MasonInstall black prettier` — ou pelo sistema: `npm install -g prettier` e `pipx install black`.
 
-Pronto! Agora basta digitar `lvim` no terminal. Na primeira execução, ele baixará todos os plugins, LSPs e formatadores automaticamente.
+Pronto! Agora basta digitar `lvim` no terminal. Na primeira execução, ele baixa os plugins e os LSPs automaticamente.
 
 ---
 
