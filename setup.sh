@@ -81,7 +81,7 @@ install_base() {
   step "Instalando dependências de base (pede sudo)"
   if [ "$PM" = "apt" ]; then
     sudo apt-get update -y
-    sudo apt-get install -y neovim git make python3-pip python3-venv \
+    sudo apt-get install -y neovim git make python3-pip \
       nodejs npm cargo ripgrep curl unzip fontconfig
   else
     sudo pacman -Sy --needed --noconfirm neovim git make python-pip \

@@ -48,8 +48,8 @@ Ele pede `sudo` só para os pacotes de sistema. No fim, mostra uma validação. 
 A ideia é usar link simbólico, assim você edita os arquivos aqui e o LunarVim já absorve as mudanças.
 
 1. **Instale as dependências básicas no sistema:**
-   - **Ubuntu/Debian:** `sudo apt install -y neovim git make python3-pip npm nodejs cargo ripgrep curl unzip`
-   - **Arch Linux:** `sudo pacman -S --needed neovim git make python-pip npm nodejs cargo ripgrep curl unzip`
+   - **Ubuntu/Debian:** `sudo apt install -y neovim git make python3-pip npm nodejs cargo ripgrep curl unzip fontconfig`
+   - **Arch Linux:** `sudo pacman -S --needed neovim git make python-pip npm nodejs cargo ripgrep curl unzip fontconfig`
 2. **Instale uma Nerd Font** (ex: *FiraCode Nerd Font*) e aplique nas configurações do seu emulador de terminal.
 3. **Instale o LunarVim:**
    ```bash
@@ -119,7 +119,7 @@ Formatos de URL: `mysql://…`, `postgresql://…`, `sqlserver://…`, `sqlite:/
 | `<leader>rr` | (visual) Rodar a **seleção** na conexão do buffer |
 | `<leader>ra` | Rodar o **arquivo inteiro** na conexão do buffer |
 
-> `<leader>` é a tecla líder (por padrão, `Espaço`). O aviso `Using a password on the command line interface can be insecure` que aparece no resultado é inofensivo (o cliente `mysql` recebe a senha por argumento).
+> `<leader>` é a tecla líder (por padrão, `Espaço`). O aviso `Using a password on the command line interface can be insecure` que aparece no resultado **não impede a execução** (o cliente `mysql` recebe a senha por argumento), mas evite expor esse terminal/prints/logs — a senha pode aparecer.
 
 ---
 
