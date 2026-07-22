@@ -9,8 +9,8 @@
 
 Model:              Gemini 3.1 Pro (High)
 Session:            34e14553-3088-45a1-a3a2-d895e22c9a50
-Updated at:         2026-07-22 05:41 -03
-Atividade:          Atualizacao retroativa dos handoffs documentando correcoes de interface, lsp, markdown renderer e downgrade do neovim
+Updated at:         2026-07-17 01:47 -03
+Atividade:          Resolucao de bugs do Neovim 0.12 (Treesitter), downgrade para 0.10.0, e configuracao WYSIWYG de Markdown
 
 ```text
 > Codex (GPT-5.5 / xhigh)
