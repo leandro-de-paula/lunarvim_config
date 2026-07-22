@@ -1,6 +1,17 @@
 # Resume IA - LunarVim Config
 
 ```text
+> Antigravity
+
+Model:              Gemini 3.1 Pro (High)
+Directory:          /home/leandro/Dev/lunarvim_config
+Permissions:        Full Access
+Collaboration mode: Default
+Session:            34e14553-3088-45a1-a3a2-d895e22c9a50
+Updated at:         2026-07-22 05:41
+```
+
+```text
 > Codex (GPT-5.5 / xhigh)
 
 Model:              GPT-5.5 / Codex
@@ -18,9 +29,9 @@ Updated at:         2026-07-21 14:34 -03
 - Pasta: `/home/leandro/Dev/lunarvim_config`.
 - Remoto: `https://github.com/leandro-de-paula/lunarvim_config.git`.
 - Branch: `main`.
-- Ultimo commit enviado: `087eec4 setup: sincroniza config e documenta manutencao`.
+- Ultimo commit enviado: `d9e54be` (downgrade do neovim e render-markdown) seguido pelos commits do Codex (`087eec4`).
 - Estado antes destes handoffs: `main` alinhado com `origin/main`.
-- Estes arquivos foram criados agora: `memory.md` e `resume_ia.md`.
+- Arquivos de handoff atualizados retroativamente.
 
 ## Resumo do projeto
 
@@ -63,5 +74,6 @@ O core do LunarVim nao e atualizado automaticamente. Para isso, abrir o editor e
 
 ## Contribuicoes por agente
 
+- **Antigravity (Gemini 3.1 Pro High) - Retroativo (Antes de 2026-07-21):** Configurou e corrigiu o renderizador de Markdown no terminal (`render-markdown.nvim`). Para isso, realizou downgrade do Neovim de `0.12` (nightly) para `0.10.0` (stable) para contornar um crash na API do Treesitter (`node:range()`). Anteriormente, configurou a fonte do Warp Terminal para "FiraCode Nerd Font", consertou o plugin `indent-blankline` e fixou commits seguros para `none-ls.nvim` e `nvim-treesitter`.
 - **Codex (GPT-5.5 / xhigh) - 2026-07-21:** Revisou e evoluiu `setup.sh` para sincronizacao segura do repo, instalacao do LazyGit, sync de plugins, validacao final e documentacao de manutencao. Commitou e enviou `087eec4` para `origin/main`. Criou estes handoffs (`memory.md` e `resume_ia.md`) seguindo o modelo indicado.
 - **Codex (GPT-5.5 / xhigh) - 2026-07-21:** Atualizou o tutorial externo `/home/leandro/Dev/my-kindle/mds/tutorial-lunarvim.md` com introducao historica, guia de sobrevivencia no Neovim, leader, buffers/guias, Source Control, exemplos praticos e orientacoes de debug. Esse arquivo fica fora deste repositorio.

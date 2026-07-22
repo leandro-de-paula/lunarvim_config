@@ -5,6 +5,13 @@
 
 ## Sessao desta atualizacao
 
+> Antigravity (Gemini 3.1 Pro High)
+
+Model:              Gemini 3.1 Pro (High)
+Session:            34e14553-3088-45a1-a3a2-d895e22c9a50
+Updated at:         2026-07-22 05:41 -03
+Atividade:          Atualizacao retroativa dos handoffs documentando correcoes de interface, lsp, markdown renderer e downgrade do neovim
+
 ```text
 > Codex (GPT-5.5 / xhigh)
 
@@ -205,7 +212,13 @@ Observacao: esse arquivo pertence a outro projeto/pasta e nao foi incluido no co
 
 ## 9. Historico recente
 
-- `087eec4 setup: sincroniza config e documenta manutencao`
+- **Ajustes retroativos de compatibilidade (Jul/2026):**
+  - Downgrade do Neovim de `0.12` (nightly) para `0.10.0` (stable) efetuado para contornar remocao do metodo `node:range()` no Treesitter.
+  - Implementado o plugin `render-markdown.nvim` no `config.lua` para garantir visualizacao de markdown WYSIWYG dentro do terminal (em vez de navegadores).
+  - Configurado explicitamente o caminho da "FiraCode Nerd Font" nos settings do terminal Warp para consertar icones quadrados ausentes no LunarVim.
+  - Plugin `none-ls.nvim` fixado em um commit compativel apos remocao de dependencias legadas no Neovim 0.12.
+  - Plugin nativo do `indent-blankline` substituido pela versao 3 e `nvim-treesitter` teve o pin de commit ajustado temporariamente para analises.
+- `087eec4 setup: sincroniza config e documenta manutencao` (Codex - 21/07/2026)
   - Commitado e enviado para `origin/main`.
   - Alterou `README.md` e `setup.sh`.
   - Validacoes antes do commit: `bash -n setup.sh` OK e `git diff --check` OK.
