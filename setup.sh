@@ -417,7 +417,8 @@ sync_lvim_plugins() {
 # ---- 13. conexões do dadbod (esqueleto, sem senha) -------------------
 setup_db_connections() {
   step "Preparando o arquivo de conexões do dadbod"
-  local dir="$HOME/.config/dadbod" file="$dir/connections.env"
+  local dir="$HOME/.config/dadbod"
+  local file="$dir/connections.env"
   mkdir -p "$dir"; chmod 700 "$dir"
   if [ ! -f "$file" ]; then
     cat > "$file" <<'ENVEOF'
