@@ -210,10 +210,14 @@ local function db_pick()
 end
 vim.api.nvim_create_user_command("DbPick", db_pick, {})
 
--- Atalhos
-lvim.keys.normal_mode["<leader>db"] = ":DBUIToggle<CR>"  -- abre/fecha a árvore do dadbod-ui
-lvim.keys.normal_mode["<leader>dc"] = ":DbPick<CR>"      -- escolher a conexão do buffer atual
-lvim.keys.normal_mode["<leader>ra"] = ":%DB<CR>"         -- rodar o BUFFER inteiro na conexão do buffer (b:db)
+-- Atalhos via Which-Key para sobrepor os padrões do LunarVim (Debug)
+lvim.builtin.which_key.mappings["d"].name = "Debug / Database"
+lvim.builtin.which_key.mappings["d"]["b"] = { "<cmd>DBUIToggle<CR>", "Toggle DBUI" }
+lvim.builtin.which_key.mappings["d"]["c"] = { "<cmd>DbPick<CR>", "Choose DB Connection" }
+
+lvim.builtin.which_key.mappings["r"] = lvim.builtin.which_key.mappings["r"] or { name = "Run" }
+lvim.builtin.which_key.mappings["r"]["a"] = { "<cmd>%DB<CR>", "Run Buffer SQL" }
+
 lvim.keys.visual_mode["<leader>rr"] = ":DB<CR>"          -- rodar a SELEÇÃO (visual) na conexão do buffer
 lvim.keys.normal_mode["<leader>mm"] = ":lua MiniMap.toggle()<CR>"
 lvim.keys.normal_mode["<leader>mp"] = ":RenderMarkdown toggle<CR>"
